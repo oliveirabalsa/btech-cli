@@ -1,5 +1,6 @@
 use clap::Args;
 use lipsum::lipsum;
+use crate::utils::copy;
 
 #[derive(Args)]
 pub struct LoremArgs {
@@ -10,6 +11,8 @@ pub struct LoremArgs {
 pub fn execute(args: &LoremArgs) {
     let lorem = lipsum(args.count as usize);
     println!("{}", lorem);
+    copy::copy_to_clipboard(&lorem);
+    println!("Copied to clipboard");
 }
 
 #[cfg(test)]
