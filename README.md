@@ -83,7 +83,9 @@ btech --help
 
 ## 📦 Installation
 
-### Method 1: Install from Crates.io (Recommended)
+### Method 1: Install from Crates.io (Coming Soon)
+
+> **Note**: This project is not yet published to crates.io. Once published, you can install it with:
 
 ```bash
 cargo install btech
