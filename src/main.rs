@@ -1,47 +1,51 @@
 use clap::{Parser, Subcommand};
-use uuid::Uuid;
-use lipsum::lipsum;
+
+mod commands;
+mod utils;
+
+use commands::{uuid, lorem};
 
 #[derive(Parser)]
-#[command(name = "btech", about = "A CLI for managing btech projects")]
+#[command(
+    name = "btech",
+    about = "A powerful CLI tool for developers providing quick access to common utilities",
+    version,
+    author
+)]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
 }
 
-#[derive(Parser)]
-struct LoremArgs {
-    #[arg(short, long, default_value_t = 10)]
-    count: u32,
-}
-
 #[derive(Subcommand)]
 enum Commands {
     Uuid,
-    Lorem(LoremArgs),
+    Lorem(lorem::LoremArgs),
 }
-
-fn print_uuid() {
-    let new_uuid = Uuid::new_v4();
-    println!("{}", new_uuid);
-}
-
-fn print_lorem(count: u32) {
-    let lorem = lipsum(count as usize);
-    println!("{}", lorem);
-}
-
-
 
 fn main() {
     let cli = Cli::parse();
 
     match cli.command {
         Commands::Uuid => {
-            print_uuid();
+            uuid::execute();
         }
         Commands::Lorem(args) => {
-            print_lorem(args.count);
+            lorem::execute(&args);
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_cli_parsing() {
+        let cli = Cli::parse_from(["btech", "uuid"]);
+        match cli.command {
+            Commands::Uuid => {}
+            _ => panic!("Expected Uuid command"),
         }
     }
 }
